@@ -18,6 +18,7 @@
   "dependencies": {
     "ansi-regex": "^4.1.0",
     "ansi-styles": "^3.2.1",
+    "apollo-server-express": "^2.15.0",
     "camelcase": "^5.3.1",
     "chalk": "^2.4.2",
     "cliui": "^5.0.0",
