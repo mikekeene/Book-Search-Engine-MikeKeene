@@ -9,25 +9,24 @@ import Navbar from './components/Navbar';
 
 //TODO: Create an Apollo Provider to make every request work with Apollo server
 const httpLink = createHttpLink({
-  uri: '/graphql' //establishing connection to server's /graphql endpoint
+  uri: '/graphql',
 });
-// only need 2nd parameter, so use '_' as placeholder 
+
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('id_token');
-  return{
-    header: {
+  return {
+    headers: {
       ...headers,
       authorization: token ? `Bearer ${token}` : '',
     },
-  }
-})
-// set up Apollo Client
-const client = new ApolloClient({
-  // concat method to combine authLink & httpLink objects 
-  link: authLink.concat(httpLink),
-  // starts new cache object
-  cache: new InMemoryCache()
+  };
 });
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+});
+
 
 function App() {
   return (
