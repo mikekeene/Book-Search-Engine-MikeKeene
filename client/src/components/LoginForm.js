@@ -2,9 +2,11 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 
-import { loginUser } from '../utils/API';
 import Auth from '../utils/auth';
-
+//import useMutation Hook for LOGIN_USER mutation functionality
+import { useMutation } from '@apollo/client';
+// import LOGIN_USER mutation for login form functionality
+import { LOGIN_USER } from '../utils/mutations';
 // TODO: LoginForm.js: Replace loginUser() imported from API file with the LOGIN_USER mutation
 
 
@@ -12,6 +14,8 @@ const LoginForm = () => {
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  //add mutation
+  const [login, { error }] = useMutation(LOGIN_USER);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -21,28 +25,19 @@ const LoginForm = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    // check if form has everything (as per react-bootstrap docs)
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-
+    // try...catch 
     try {
-      const response = await loginUser(userFormData);
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
-      const { token, user } = await response.json();
-      console.log(user);
-      Auth.login(token);
+      //implement login
+      const {data } = await login({
+        //user data inputed
+        variables: {...userFormData}
+      });
+      //update Auth
+      Auth.login(data.login.token);
     } catch (err) {
       console.error(err);
-      setShowAlert(true);
     }
-
+    // make sure form input boxes are cleared
     setUserFormData({
       username: '',
       email: '',
@@ -88,6 +83,7 @@ const LoginForm = () => {
           Submit
         </Button>
       </Form>
+      {error && <div> Login has failed! </div>}
     </>
   );
 };
