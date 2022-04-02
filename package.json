@@ -14,11 +14,13 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mikekeene/Book-Search-Engine-MikeKeene.git"
+    "url": "git+https://github.com/mikekeene/book-search-Eegine-mikekeene.git"
   },
   "bugs": {
-    "url": "https://github.com/mikekeene/Book-Search-Engine-MikeKeene/issues"
+    "url": "https://github.com/mikekeene/book-search-Eegine-mikekeene/issues"
   },
-  "homepage": "https://github.com/mikekeene/Book-Search-Engine-MikeKeene#readme"
+  "homepage": "https://github.com/mikekeene/book-search-Eegine-mikekeene#readme",
+  "dependencies": {
+    "concurrently": "^7.1.0"
+  }
 }
- 
