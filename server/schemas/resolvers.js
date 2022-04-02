@@ -1,6 +1,6 @@
 //TODO: Define query & mutation functionality to work with Mongoose models
 // import mongoose models
-const { User, Book } = require('../models');
+const { User } = require('../models');
 // user auth
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
@@ -20,17 +20,8 @@ const resolvers = {
         }
     },
 
-    //Mutations: loginUser, createUser, saveBook, deleteBook (fxs API.js & user-controller.js)
+    //Mutations: loginUser, createUser, saveBook, deleteBook (functions API.js & user-controller.js)
     Mutation: {
-        // fx for adding user 
-        addUser: async( parent, args) => {
-            // mongoose User model creates a new user w/ what is passed in args
-            const user = await User.create(args);
-            // token
-            const token = signToken(user);
-            //return obj combining token with user's data
-            return { token, user };
-        },
         //login resolver for user entering wrong username/password
         login: async( parent, { email, password }) => {
             const user = await User.findOne({ email });
@@ -51,17 +42,27 @@ const resolvers = {
             //return obj combining token with user's data
             return { token, user };
         },
-        //fx to save book (bookData from API.js)
-        saveBook: async( parent, bookData, context) => {
+        // fx for adding user 
+        addUser: async( parent, args) => {
+            // mongoose User model creates a new user w/ what is passed in args
+            const user = await User.create(args);
+            // token
+            const token = signToken(user);
+            //return obj combining token with user's data
+            return { token, user };
+        },
+        //function to save book (bookData from API.js)
+        saveBook: async( parent, { input }, context) => {
             if (context.user) {
                 // updatedUser fx from user-controller.js
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $addToSet: { savedBooks: bookData }},
+                    { $addToSet: { savedBooks: input }},
                     { new: true, runValidators: true }
                 );
                 return updatedUser;
             }
+            throw new AuthenticationError("You need to login in first!");
         },
         //removeBook & bookId via typeDefs
         removeBook: async( parent, { bookId }, context) => {
@@ -72,9 +73,10 @@ const resolvers = {
                     { $pull: { savedBooks: { bookId }}},
                     { new: true, runValidators: true }
                 );
-                delete deleteBook;
-                return deleteBook;
+                // Book is part of User model
+                return updatedUser;
             }
+            throw new AuthenticationError("You need to login in first!");
         }
     }
 };
