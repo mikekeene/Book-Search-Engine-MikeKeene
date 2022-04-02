@@ -57,7 +57,7 @@ const resolvers = {
                 // updatedUser fx from user-controller.js
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $push: { savedBooks: bookData }},
+                    { $addToSet: { savedBooks: bookData }},
                     { new: true, runValidators: true }
                 );
                 return updatedUser;
