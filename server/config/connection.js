@@ -1,11 +1,9 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/book-search-engine', {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/booksearch', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  //needed for mongoose 5
-  useCreateIndex: true,
-  useFindAndModify: false,
 });
 
 module.exports = mongoose.connection;
