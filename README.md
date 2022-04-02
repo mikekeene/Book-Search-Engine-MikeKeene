@@ -20,6 +20,10 @@
 
 ## Usage
 
+### Screenshot
+
+<img width="1311" alt="booksearch" src="https://user-images.githubusercontent.com/93222787/161403529-97f09f09-f480-4294-98be-1eccd4aef825.png">
+
 ### Heroku Link
 
 <https://quiet-inlet-00265.herokuapp.com/>
