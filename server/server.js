@@ -13,19 +13,17 @@ const routes = require('./routes');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-const myApolloServer = async() => {
-  const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-    // make sure each request is authenticated
-    context: authMiddleware,
-  });
-  await server.start();
-  // apply apollo server to express server as middleware:
-  server.applyMiddleware({ app });
-  console.log(`GraphQL running at http://localhost:${PORT}${server.graphqlPath}`);
-};
-myApolloServer();
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  // make sure each request is authenticated
+  context: authMiddleware,
+});
+// apply apollo server to express server as middleware:
+server.applyMiddleware({ app });
+console.log(`GraphQL running at http://localhost:${PORT}${server.graphqlPath}`);
+
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
