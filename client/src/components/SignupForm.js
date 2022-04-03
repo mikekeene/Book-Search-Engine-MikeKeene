@@ -9,11 +9,11 @@ import { ADD_USER } from '../utils/mutations';
 
 
 const SignupForm = () => {
-  // set initial form state
+  // set initial state (blank form inputs)
   const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
-  // set state for form validation
+  // set state to validate form inputs
   const [validated] = useState(false);
-  // set state for alert
+  // set state showing alerts
   const [showAlert, setShowAlert] = useState(false);
   // implement mutation
   const [addUser, { error }] = useMutation(ADD_USER);
@@ -25,16 +25,29 @@ const SignupForm = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    //try ...catch
+
+    // check if form has everything (as per react-bootstrap docs)
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
     try {
       const { data } = await addUser({
-        variables: { ...userFormData}
+        variables: { ...userFormData }
       });
       Auth.login(data.addUser.token);
     } catch (err) {
       console.error(err);
       setShowAlert(true);
     }
+
+    setUserFormData({
+      username: '',
+      email: '',
+      password: '',
+    });
   };
 
   return (
@@ -91,7 +104,6 @@ const SignupForm = () => {
           Submit
         </Button>
       </Form>
-      {error && <div> Signup has failed! </div>}
     </>
   );
 };
