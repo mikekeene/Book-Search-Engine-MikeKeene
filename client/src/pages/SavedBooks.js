@@ -81,7 +81,6 @@ const SavedBooks = () => {
           })}
         </CardColumns>
       </Container>
-      {error && <div> Something went wrong! </div>}
     </>
   );
 };
