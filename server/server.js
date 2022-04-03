@@ -1,7 +1,7 @@
 const express = require('express');
 const {ApolloServer} = require('apollo-server-express');
 const path = require('path');
-
+require('dotenv').config();
 const {typeDefs, resolvers} = require('./schemas');
 const {authMiddleware} = require('./utils/auth');
 const db = require('./config/connection');
@@ -22,7 +22,7 @@ const startServer = async () => {
 
 startServer()
   
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 /// Serve up static assets
@@ -35,7 +35,6 @@ app.get('*', (req, res) => {
 });
 
 db.once('open', () => {
-  app.listen(PORT, () => {
-    console.log(`API server running on port ${PORT}!`);
-  });
+  app.listen(PORT, () => console.log(`🌍 Now listening on localhost:${PORT}`));
+  console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`);
 });

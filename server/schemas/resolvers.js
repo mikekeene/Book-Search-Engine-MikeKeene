@@ -52,12 +52,12 @@ const resolvers = {
             return { token, user };
         },
         //function to save book (bookData from API.js)
-        saveBook: async( parent, { body }, context) => {
+        saveBook: async( parent, args, context) => {
             if (context.user) {
                 // updatedUser fx from user-controller.js
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $addToSet: { savedBooks: body }},
+                    { $addToSet: { savedBooks: args }},
                     { new: true}
                 );
                 return updatedUser;

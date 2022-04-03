@@ -12,23 +12,11 @@ const typeDefs = gql`
         title: String
     }
 
-    # saveBookInput for easier mutation readability 
-    input saveBookInput {
-        authors: [String]
-        description: String
-        bookId: String
-        image: String
-        link: String
-        title: String
-    }
-
     # User type: _id, username, email, bookCount, savedBooks(array of the Book type)
     type User {
         _id: ID
         username: String
         email: String
-        password: String
-        bookCount: Int
         savedBooks: [Book]
     }
     # Query type: me - which returns a User type
@@ -49,7 +37,7 @@ const typeDefs = gql`
         # Accepts a username, email, & password as parameters; returns an Auth type
         addUser(username: String!, email: String!, password: String!): Auth
         # saveBook: returns a User type.
-        saveBook(body: saveBookInput): User
+        saveBook(bookId: String!, authors: [String]!, description: String, image: String, link: String, title: String!): User
         # removeBook: Accepts a book's bookId as a parameter; returns a User type.
         removeBook(bookId: String!): User
     }
