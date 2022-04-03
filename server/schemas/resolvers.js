@@ -17,7 +17,15 @@ const resolvers = {
             }
             //if user not logged in, throw error
             throw new AuthenticationError('NOT Logged In!');
-        }
+        },
+        users: async () => {
+            return User.find({});
+        },
+        user: async (parent, args) => {
+            return User.findOne({
+                args
+            });
+        },
     },
 
     //Mutations: loginUser, createUser, saveBook, deleteBook (functions API.js & user-controller.js)
@@ -43,22 +51,22 @@ const resolvers = {
             return { token, user };
         },
         // fx for adding user 
-        addUser: async( parent, args) => {
+        addUser: async( parent, { username, email, password }) => {
             // mongoose User model creates a new user w/ what is passed in args
-            const user = await User.create(args);
+            const user = await User.create({ username, email, password });
             // token
             const token = signToken(user);
             //return obj combining token with user's data
             return { token, user };
         },
         //function to save book (bookData from API.js)
-        saveBook: async( parent, { body }, context) => {
+        saveBook: async( parent, args, context) => {
             if (context.user) {
                 // updatedUser fx from user-controller.js
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $addToSet: { savedBooks: body }},
-                    { new: true}
+                    { $addToSet: { savedBooks: args }},
+                    { new: true, runValidators: true }
                 );
                 return updatedUser;
             }
@@ -70,7 +78,7 @@ const resolvers = {
                 // deleteBook fx from user-controllers.js
                 const deleteBook = await User.findByIdAndUpdate(
                     { _id: context.user._id},
-                    { $pull: { savedBooks: { bookId: bookId }}},
+                    { $pull: { savedBooks: { bookId }}},
                     { new: true }
                 );
                 // Book is part of User model
