@@ -52,13 +52,13 @@ const resolvers = {
             return { token, user };
         },
         //function to save book (bookData from API.js)
-        saveBook: async( parent, { input }, context) => {
+        saveBook: async( parent, { body }, context) => {
             if (context.user) {
                 // updatedUser fx from user-controller.js
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $addToSet: { savedBooks: input }},
-                    { new: true, runValidators: true }
+                    { $addToSet: { savedBooks: body }},
+                    { new: true}
                 );
                 return updatedUser;
             }
@@ -70,13 +70,12 @@ const resolvers = {
                 // deleteBook fx from user-controllers.js
                 const deleteBook = await User.findByIdAndUpdate(
                     { _id: context.user._id},
-                    { $pull: { savedBooks: { bookId }}},
-                    { new: true, runValidators: true }
+                    { $pull: { savedBooks: { bookId: bookId }}},
+                    { new: true }
                 );
                 // Book is part of User model
                 return updatedUser;
             }
-            throw new AuthenticationError("You need to login in first!");
         }
     }
 };
