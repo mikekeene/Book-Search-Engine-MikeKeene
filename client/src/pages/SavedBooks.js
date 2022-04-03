@@ -15,9 +15,20 @@ import { removeBookId } from '../utils/localStorage';
 
 
 const SavedBooks = () => {
-  const { loading, data } = useQuery(GET_ME);
+  const { loading, error, data, getMe } = useQuery(GET_ME);
+  
+  //repurpose useEffect() hook
+  useEffect(() => {
+    getMe();
+  }, [getMe, data]);
+  
   const userData = data?.me || {};
-  const [removeBook, { error }] = useMutation(REMOVE_BOOK);
+
+  if (error) {
+    console.log(error.message);
+  }
+
+  const [removeBook] = useMutation(REMOVE_BOOK);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -29,14 +40,10 @@ const SavedBooks = () => {
     }
     
     try{
-      const response = await removeBook({
-        variables: {bookId: bookId},
-      });
-      if(!response) {
-        throw new Error ('Something went wrong!')
-      }
+      await removeBook({ variables: { bookId }});
       // upon success, remove book's id from localStorage
       removeBookId(bookId);
+      getMe();
     } catch (err) {
       console.error(err);
     }
