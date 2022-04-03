@@ -1,4 +1,4 @@
-import React from 'react'; //removed useEffect & useState Hooks
+import React, { useEffect } from 'react'; //removed useEffect & useState Hooks
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 //import useQuery & useMutation React Hooks
 import { useQuery, useMutation } from '@apollo/client';
