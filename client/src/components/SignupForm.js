@@ -15,9 +15,10 @@ const SignupForm = () => {
   const [validated] = useState(false);
   // set state showing alerts 
   const [showAlert, setShowAlert] = useState(false);
-  // implement mutation
+  // implement mutation + error handling 
   const [addUser, { error }] = useMutation(ADD_USER);
 
+  // event handler to handle any changes in input boxes of signup form
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
@@ -25,7 +26,7 @@ const SignupForm = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
+    //form validation
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -36,7 +37,7 @@ const SignupForm = () => {
       const { data } = await addUser({
         variables: userFormData
       });
-
+      // if an error happens, show in the console
       if (error) {
         console.log(error.message);
       }
@@ -44,7 +45,7 @@ const SignupForm = () => {
       Auth.login(data.addUser.token);
     } catch (err) {
       console.error(err);
-      setShowAlert(true);
+      setShowAlert(true); //show alert if there's an error with signing up
     }
     //reset form input boxes to empty after submit
     setUserFormData({
