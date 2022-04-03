@@ -15,12 +15,12 @@ import { removeBookId } from '../utils/localStorage';
 
 
 const SavedBooks = () => {
-  const { loading, error, data, getMe } = useQuery(GET_ME);
+  const { loading, error, data } = useQuery(GET_ME);
   
   //repurpose useEffect() hook
-  useEffect(() => {
-    getMe();
-  }, [getMe, data]);
+  // useEffect(() => {
+  //   getMe();
+  // }, [getMe, data]);
   
   const userData = data?.me || {};
 
@@ -43,7 +43,7 @@ const SavedBooks = () => {
       await removeBook({ variables: { bookId }});
       // upon success, remove book's id from localStorage
       removeBookId(bookId);
-      getMe();
+      // getMe();
     } catch (err) {
       console.error(err);
     }
