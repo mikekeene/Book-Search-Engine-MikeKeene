@@ -10,6 +10,7 @@ import Navbar from './components/Navbar';
 //TODO: Create an Apollo Provider to make every request work with Apollo server
 const httpLink = new HttpLink({
   uri: "/graphql",
+  fetch: fetch
 });
 
 const authLink = setContext((_, { headers }) => {
