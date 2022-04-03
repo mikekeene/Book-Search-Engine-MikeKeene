@@ -2,7 +2,7 @@
 
 ## Description
 
- An Google book search engine refactored to work using GraphQL and Apollo Server.
+ A Google book search engine refactored to use Apollo Server with GraphQL queries and mutations (replacing the RESTful Server and functionality.)
 
 ## Table of Contents
 
