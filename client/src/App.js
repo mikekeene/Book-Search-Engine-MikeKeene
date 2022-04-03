@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 // import ApolloProvider to be cable to create the Apollo Provider
 import {
-  ApolloClient, InMemoryCache, ApolloProvider, HttpLink} from '@apollo/client';
+  ApolloClient, InMemoryCache, ApolloProvider, createHttpLink} from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
 import SearchBooks from './pages/SearchBooks';
@@ -10,9 +10,8 @@ import SavedBooks from './pages/SavedBooks';
 import Navbar from './components/Navbar';
 
 //TODO: Create an Apollo Provider to make every request work with Apollo server
-const httpLink = HttpLink({
-  uri: "http://localhost:3001/graphql" || "/graphql",
-  fetch: fetch
+const httpLink = createHttpLink({
+  uri: '/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
