@@ -31,7 +31,7 @@ const myApolloServer = async() => {
   server.applyMiddleware({ app });
   console.log(`GraphQL running at http://localhost:${PORT}${server.graphqlPath}`);
   
-  await new Promise(resolve => httpServer.listen({port: process.env.PORT || 3001 }, resolve));
+  await new Promise(resolve => httpServer.listen({port: PORT }, resolve));
   
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
