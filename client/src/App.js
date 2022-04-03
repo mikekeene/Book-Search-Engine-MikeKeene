@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 // import ApolloProvider to be cable to create the Apollo Provider
 import {
   ApolloClient, InMemoryCache, ApolloProvider, HttpLink} from '@apollo/client';
@@ -35,16 +35,16 @@ function App() {
   return (
     // add so entire app can interact with Apollo Client
     <ApolloProvider client={client}>
-      <Router>
+      <BrowserRouter>
         <>
           <Navbar />
-          <Switch>
-            <Route exact path='/' component={SearchBooks} />
-            <Route exact path='/saved' component={SavedBooks} />
+          <Routes>
+            <Route path='/' element={SearchBooks} />
+            <Route path='/saved' element={SavedBooks} />
             <Route render={() => <h1 className='display-2'>Wrong page!</h1>} />
-          </Switch>
+          </Routes>
         </>
-      </Router>
+      </BrowserRouter>
     </ApolloProvider>
   );
 }
