@@ -11,33 +11,35 @@ import { removeBookId } from '../utils/localStorage';
 
 //TODO: Remove useEffect() Hook that sets the state for UserData.
 //TODO: useQuery() Hook to execute GET_ME query on load & save it to userData.
-//TODO: useMutation() Hook to execute REMOVE_BOOK mutation in handleDeleteBook() (keep the removeBookId())
+
 
 
 const SavedBooks = () => {
-  const { loading, error, data } = useQuery(GET_ME);
-  
+  // these variables are destructured from useQuery hook
+  const { loading, error, data } = useQuery(GET_ME); //executes GET_ME query
+  // return user data in me object or as an empty object if no saved books
   const userData = data?.me || {};
-
+  // error messages
   if (error) {
     console.log(error.message);
   }
-
+  // mutation for deleting book from saved books
   const [removeBook] = useMutation(REMOVE_BOOK);
 
-  // create function that accepts the book's mongo _id value as param and deletes the book from the database
+  // create function that deletes the book from the database
   const handleDeleteBook = async (bookId) => {
+    // determine if user logged in and it's authenticated
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     // if token is not present, not authenticated
     if (!token) {
       return false;
     }
-    
+    // try...catch
     try{
       await removeBook({ variables: { bookId }});
       // upon success, remove book's id from localStorage
-      removeBookId(bookId);
+      removeBookId(bookId); //keep removeBookId functionality
     } catch (err) {
       console.error(err);
     }
