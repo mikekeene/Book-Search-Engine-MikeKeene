@@ -1,7 +1,7 @@
 import React from 'react'; //removed useEffect & useState Hooks
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 //import useQuery & useMutation React Hooks
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/client';
 // import mutation for removing books from saved books
 import { REMOVE_BOOK } from '../utils/mutations';
 // import GET_ME query to query user data 
