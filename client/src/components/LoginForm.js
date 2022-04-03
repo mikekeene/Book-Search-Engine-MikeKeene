@@ -15,7 +15,7 @@ const LoginForm = () => {
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   //add mutation
-  const [login, { error }] = useMutation(LOGIN_USER);
+  const [loginUser] = useMutation(LOGIN_USER);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -25,17 +25,25 @@ const LoginForm = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
+    // form validation methods
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
     // try...catch 
     try {
       //implement login
-      const {data } = await login({
+      const {data } = await loginUser({
         //user data inputed
-        variables: {...userFormData}
+        variables: { ...userFormData }
       });
       //update Auth
       Auth.login(data.login.token);
     } catch (err) {
       console.error(err);
+      setShowAlert(true);
     }
     // make sure form input boxes are cleared
     setUserFormData({
@@ -83,7 +91,6 @@ const LoginForm = () => {
           Submit
         </Button>
       </Form>
-      {error && <div> Login has failed! </div>}
     </>
   );
 };
