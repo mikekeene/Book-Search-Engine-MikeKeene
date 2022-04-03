@@ -3,20 +3,20 @@ import { Form, Button, Alert } from 'react-bootstrap';
 
 import Auth from '../utils/auth';
 // import useMutation Hook so can implement ADD_USER mutation
-import { useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/react-hooks';
 import { ADD_USER } from '../utils/mutations';
 //TODO: SignupForm.js: Replace addUser() imported from API file with ADD_USER mutation
 
 
 const SignupForm = () => {
   // set initial state (blank form inputs)
-  const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
+  const [userFormData, setUserFormData] = useState({ username: "", email: "", password: ""});
   // set state to validate form inputs
   const [validated] = useState(false);
   // set state showing alerts
   const [showAlert, setShowAlert] = useState(false);
   // implement mutation
-  const [addUser, { error }] = useMutation(ADD_USER);
+  const [addUser] = useMutation(ADD_USER);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -44,9 +44,9 @@ const SignupForm = () => {
     }
 
     setUserFormData({
-      username: '',
-      email: '',
-      password: '',
+      username: "",
+      email: "",
+      password: "",
     });
   };
 
