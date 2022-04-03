@@ -18,10 +18,11 @@ const resolvers = {
             //if user not logged in, throw error
             throw new AuthenticationError('NOT Logged In!');
         },
-        users: async () => {
+        // query to find all Users
+        users: async () => { //useful for graphQl playground testing
             return User.find({});
         },
-        user: async (parent, args) => {
+        user: async (parent, args) => { //useful for graphQl playground testing
             return User.findOne({
                 args
             });
@@ -41,6 +42,7 @@ const resolvers = {
             const correctPw = await user.isCorrectPassword(password);
             // wrong password
             if (!correctPw) {
+                // return same error message to limit hacking
                 throw new AuthenticationError(
                     'Incorrect credentials'
                 );
@@ -65,6 +67,7 @@ const resolvers = {
                 // updatedUser fx from user-controller.js
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
+                    // us addToSet, not push to add to savedBooks array
                     { $addToSet: { savedBooks: args }},
                     { new: true, runValidators: true }
                 );
@@ -78,6 +81,7 @@ const resolvers = {
                 // deleteBook fx from user-controllers.js
                 const updatedBooks = await User.findOneAndUpdate(
                     { _id: context.user._id},
+                    //pulling deleted book from savedBooks array
                     { $pull: { savedBooks: { bookId }}},
                     { new: true }
                 );
