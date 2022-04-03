@@ -76,13 +76,13 @@ const resolvers = {
         removeBook: async( parent, { bookId }, context) => {
             if(context.user) {
                 // deleteBook fx from user-controllers.js
-                const deleteBook = await User.findByIdAndUpdate(
+                const updatedBooks = await User.findOneAndUpdate(
                     { _id: context.user._id},
                     { $pull: { savedBooks: { bookId }}},
                     { new: true }
                 );
                 // Book is part of User model
-                return updatedUser;
+                return updatedBooks;
             }
         }
     }
